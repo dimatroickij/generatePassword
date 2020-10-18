@@ -1,0 +1,35 @@
+{% extends "application.html" %}
+{% block content %}
+<div class="fullscreen__container" style="flex: 1; display: flex; justify-content: center; align-items: center">
+    <div class="container">
+        <div class="jumbotron">
+            <h2 class="text-center mb-3">Вход в систему</h2>
+            {% for category, message in get_flashed_messages(with_categories=true) %}
+            <div class="alert alert-primary {{ category }}" role="alert">
+                {{ message}}
+            </div>
+            {% endfor %}
+            <form method="post">
+                {{ form.csrf_token }}
+
+                {% for field in form if field.name != "csrf_token" and field.name != "remember" %}
+                <div class="form-group row">
+                    {{ field.label(class_="col-sm-2 col-form-label") }}
+                    <div class="col-sm-10">
+                        {{ field(class_="form-control") }}
+                        {% for error in field.errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+                <div class="form-group form-check">
+                    {{ form.remember(class_="form-check-input", id_="ch") }}
+                    {{ form.remember.label(for_="ch") }}
+                </div>
+                <button class="btn btn-primary" type="submit">Войти</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
