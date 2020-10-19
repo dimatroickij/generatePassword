@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, DateField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Length
 
 
 class LoginForm(FlaskForm):
@@ -11,7 +11,9 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
     username = StringField("Имя пользователя", validators=[DataRequired()])
-    password = PasswordField("Пароль", validators=[DataRequired()])
+    password = PasswordField("Пароль", validators=[DataRequired(), Length(max=6)], description='Требования к паролю: длина 6 символов,'
+                                                                                ' используемые символы: латиница '
+                                                                                '(строчные буквы)')
     surname = StringField("Фамилия", validators=[DataRequired()])
     name = StringField("Имя", validators=[DataRequired()])
     middlename = StringField("Отчество", validators=[DataRequired()])
@@ -23,4 +25,5 @@ class RegistrationForm(FlaskForm):
 
 class EditPassword(FlaskForm):
     lastPassword = PasswordField("Текущий пароль", validators=[DataRequired()])
-    newPasswords = PasswordField("Новый пароль", validators=[DataRequired()])
+    newPassword = PasswordField("Новый пароль", validators=[DataRequired()])
+    newPasswordRepeat = PasswordField("Новый пароль", validators=[DataRequired()])

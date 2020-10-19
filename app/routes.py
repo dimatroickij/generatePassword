@@ -67,11 +67,14 @@ def editPassword():
     if form.validate_on_submit():
         user = db.session.query(User).filter(User.username == current_user.username).first()
         if user and user.check_password(form.lastPassword.data):
-            user.password_hash = generate_password_hash(form.newPasswords.data)
-            db.session.commit()
-            logout_user()
-            flash('Вы успешно сменили пароль')
-            return redirect(url_for('login'))
+            if form.newPassword.data == form.newPasswordRepeat.data:
+                user.password_hash = generate_password_hash(form.newPassword.data)
+                db.session.commit()
+                logout_user()
+                flash('Вы успешно сменили пароль')
+                return redirect(url_for('login'))
+            flash('Введённые пароли не совпадают')
+            return redirect(url_for('editPassword'))
 
         flash('Вы ввели неверный пароль')
         return redirect(url_for('editPassword'))
