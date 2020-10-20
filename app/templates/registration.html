@@ -19,7 +19,7 @@
                         {{ field(class_="form-control") }}
                         <small id="" class="form-text text-muted">{{ field.description }}</small>
                         {% for error in field.errors %}
-                        <div class="alert alert-danger" role="alert">
+                            <div class="alert alert-danger" role="alert">
                             {{ error }}
                         </div>
                         {% endfor %}

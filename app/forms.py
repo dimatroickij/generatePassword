@@ -19,6 +19,10 @@ class LoginForm(FlaskForm):
 
 
 class RegistrationForm(FlaskForm):
+    def checkDate(form, field):
+        if re.match('\d+\.\d+\.\d+', field.data) is None:
+            raise ValidationError('Введите правильную дату')
+
     username = StringField("Имя пользователя", validators=[DataRequired()])
     password = PasswordField("Пароль", validators=[checkPassword, DataRequired()],
                              description='Требования к паролю: длина 6 символов, используемые символы: латиница'
@@ -26,8 +30,8 @@ class RegistrationForm(FlaskForm):
     surname = StringField("Фамилия", validators=[DataRequired()])
     name = StringField("Имя", validators=[DataRequired()])
     middlename = StringField("Отчество", validators=[DataRequired()])
-    birthday = DateField("Дата рождения", format='%d.%m.%Y', description="Введите дату в формате DD.MM.YYYY",
-                         validators=[DataRequired(message="Введите правильную дату")])
+    birthday = StringField("Дата рождения", description="Введите дату в формате DD.MM.YYYY",
+                         validators=[DataRequired(), checkDate])
     placeBirth = StringField("Место рождения", validators=[DataRequired()])
     tel = StringField("Телефон", validators=[DataRequired()])
 

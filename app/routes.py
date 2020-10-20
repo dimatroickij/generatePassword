@@ -54,8 +54,6 @@ def registration():
             flash('Вы успешно зарегистрировались в системе')
             return redirect(url_for('login'))
 
-        flash('Вы ввели неправильный пароль')
-        return redirect(url_for('editPassword'))
     return render_template('registration.html', form=form)
 
 
