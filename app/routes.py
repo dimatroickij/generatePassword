@@ -1,3 +1,4 @@
+import math
 import random
 
 from flask import render_template, request, redirect, url_for, flash
@@ -106,3 +107,58 @@ def generatePassword():
     b6 = alphabet[random.randint(0, 25)]
     alphabet.upper()
     return b1 + b2 + b3 + b4 + b5 + b6
+
+
+@app.route('/lr3', methods=['post', 'get'])
+def lr3():
+    if request.method == 'POST':
+        latBig = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        latLower = 'abcdefghijklmnopqrstuvwxyz'
+        rusBig = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЪЫЭЮЯ'
+        print(rusBig)
+        rusLower = 'абвгдежзийклмнопрстуфхцчшщьъыэюя'
+        print(rusLower)
+        symbols = """!"#$%&'()*"""
+        alphabet = ''
+        figures = '0123456789'
+        checked = str(request.form['checked'])
+        powerAlphabet = 0
+
+        if checked[0] == '1':
+            powerAlphabet += len(latBig)
+            alphabet += latBig
+        if checked[1] == '1':
+            powerAlphabet += len(latLower)
+            alphabet += latLower
+        if checked[2] == '1':
+            powerAlphabet += len(rusBig)
+            alphabet += rusBig
+        if checked[3] == '1':
+            powerAlphabet += len(rusLower)
+            alphabet += rusLower
+        if checked[4] == '1':
+            powerAlphabet += len(symbols)
+            alphabet += symbols
+        if checked[5] == '1':
+            powerAlphabet += len(figures)
+            alphabet += figures
+
+        probability = float(request.form['probability'])
+        speed = int(request.form['speed'])
+        validity = int(request.form['validity'])
+
+        lowerLimit = math.ceil(round(validity * speed / probability, 1))
+        sNew = 0
+        lenPassword = 0
+        while lowerLimit >= sNew:
+            sNew = powerAlphabet ** lenPassword
+            lenPassword += 1
+
+        password = ''
+        print(alphabet)
+        for i in range(0, lenPassword - 1):
+            password += alphabet[random.randint(0, len(alphabet) - 1)]
+        print(password)
+        return {'lowerLimit': lowerLimit, 'powerAlphabet': powerAlphabet, 'lenPassword': lenPassword - 1,
+                'password': password}
+    return render_template('lr3.html')

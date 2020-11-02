@@ -1,0 +1,130 @@
+{% extends "application.html" %}
+{% block content %}
+<div class="fullscreen__container" style="flex: 1; display: flex; justify-content: center; align-items: center">
+    <script>
+        function generatePassword() {
+            checked = []
+            if ($('#latBig').is(':checked'))
+                checked.push('1')
+            else
+                checked.push('0')
+            if ($('#latLower').is(':checked'))
+                checked.push('1')
+            else
+                checked.push('0')
+            if ($('#rusBig').is(':checked'))
+                checked.push('1')
+            else
+                checked.push('0')
+            if ($('#rusLower').is(':checked'))
+                checked.push('1')
+            else
+                checked.push('0')
+            if ($('#symbols').is(':checked'))
+                checked.push('1')
+            else
+                checked.push('0')
+            if ($('#figures').is(':checked'))
+                checked.push('1')
+            else
+                checked.push('0')
+            if ($('#probability').val() !== "")
+                $.post('/lr3', {
+                    'probability': $('#probability').val(),
+                    'speed': $('#speed').val(),
+                    'validity': $('#validity').val(),
+                    'checked': checked.join('')
+                }, function (response) {
+                    $('#lowerLimit').val(response['lowerLimit'])
+                    $('#powerAlphabet').val(response['powerAlphabet'])
+                    $('#lenPassword').val(response['lenPassword'])
+                    $('#outputPassword').val(response['password'])
+                })
+            else
+                alert('введите все значения')
+        }
+    </script>
+    <div class="container">
+        <div class="jumbotron">
+            <h2 class="text-center mb-3">Генерация пароля</h2>
+            <div class="row">
+                <div class="col-9">
+                    <div class="form-group row">
+                        <label for="probability" class="col-sm-3 col-form-label"><b>P (вероятность)</b></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="probability">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="speed" class="col-sm-4 col-form-label"><b>V (скорость перебора)</b></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="speed">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="validity" class="col-sm-4 col-form-label"><b>T (срок действия пароля)</b></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="validity">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="lowerLimit" class="col-sm-4 col-form-label"><b>S* (нижняя граница
+                            паролей)</b></label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control-plaintext" id="lowerLimit">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="powerAlphabet" class="col-sm-4 col-form-label"><b>А (мощность алфавита)</b></label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control-plaintext" id="powerAlphabet">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="lenPassword" class="col-sm-4 col-form-label"><b>L (длина пароля)</b></label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control-plaintext" id="lenPassword">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label for="outputPassword" class="col-sm-4 col-form-label"><b>Пароль:</b></label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control" id="outputPassword">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="latBig">
+                        <label class="form-check-label" for="latBig">Латиница большие</label>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="latLower">
+                        <label class="form-check-label" for="latLower">Латиница маленькие</label>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="rusBig">
+                        <label class="form-check-label" for="rusBig">Русские большие</label>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="rusLower">
+                        <label class="form-check-label" for="rusLower">Русские маленькие</label>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="symbols">
+                        <label class="form-check-label" for="symbols">Символы</label>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="figures">
+                        <label class="form-check-label" for="figures">Цифры</label>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="generatePassword()">Сформировать пароль</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

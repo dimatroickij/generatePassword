@@ -1,8 +1,8 @@
 import re
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField, DateField
-from wtforms.validators import DataRequired, Length, ValidationError
+from wtforms import StringField, PasswordField, BooleanField
+from wtforms.validators import DataRequired, ValidationError
 
 
 def checkPassword(form, field):
