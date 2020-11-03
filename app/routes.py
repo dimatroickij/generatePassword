@@ -11,9 +11,8 @@ from app.models import User
 
 
 @app.route('/')
-@login_required
 def hello_world():
-    return render_template("lr1.html")
+    return render_template("home.html")
 
 
 @app.route('/login/', methods=['post', 'get'])
@@ -56,6 +55,11 @@ def registration():
             return redirect(url_for('login'))
 
     return render_template('registration.html', form=form)
+
+
+@app.route('/lr1')
+def lr1():
+    return render_template("lr1.html")
 
 
 # длина пароля 6 символов, символы - латиница (строчные символы), при смене пароля: проверка на отсутствие повторяющихся символов
@@ -109,15 +113,19 @@ def generatePassword():
     return b1 + b2 + b3 + b4 + b5 + b6
 
 
+@app.route('/lr2')
+@login_required
+def lr2():
+    return render_template('lr2.html')
+
+
 @app.route('/lr3', methods=['post', 'get'])
 def lr3():
     if request.method == 'POST':
         latBig = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         latLower = 'abcdefghijklmnopqrstuvwxyz'
-        rusBig = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЪЫЭЮЯ'
-        print(rusBig)
-        rusLower = 'абвгдежзийклмнопрстуфхцчшщьъыэюя'
-        print(rusLower)
+        rusBig = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЬЪЫЭЮЯ'
+        rusLower = 'абвгдеёжзийклмнопрстуфхцчшщьъыэюя'
         symbols = """!"#$%&'()*"""
         alphabet = ''
         figures = '0123456789'
@@ -155,10 +163,8 @@ def lr3():
             lenPassword += 1
 
         password = ''
-        print(alphabet)
         for i in range(0, lenPassword - 1):
             password += alphabet[random.randint(0, len(alphabet) - 1)]
-        print(password)
         return {'lowerLimit': lowerLimit, 'powerAlphabet': powerAlphabet, 'lenPassword': lenPassword - 1,
                 'password': password}
     return render_template('lr3.html')

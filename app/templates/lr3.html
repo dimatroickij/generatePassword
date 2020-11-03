@@ -28,7 +28,8 @@
                 checked.push('1')
             else
                 checked.push('0')
-            if ($('#probability').val() !== "")
+            if ($('#probability').val() !== "" && $('#speed').val() !== "" && $('#validity').val() !== "" &&
+                $(':checkbox:checked').length !== 0)
                 $.post('/lr3', {
                     'probability': $('#probability').val(),
                     'speed': $('#speed').val(),
