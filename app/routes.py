@@ -168,3 +168,35 @@ def lr3():
         return {'lowerLimit': lowerLimit, 'powerAlphabet': powerAlphabet, 'lenPassword': lenPassword - 1,
                 'password': password}
     return render_template('lr3.html')
+
+
+@app.route('/lr4')
+def lr4():
+    a = 17
+    b = 11
+    MaxVal = 256 - 1
+    c = MaxVal + 1
+    t0 = 172
+    P = ['0123456789', '9876543210', '1000005', '1500000']
+
+    KSumm = []
+    SummKodBukvOtkr = []
+
+    for p in P:
+        KSumm.append(sum(ord(x) for x in p) % c)
+
+        t = []
+        t.append(t0)
+        gamma = []
+        for i in range(0, len(p)):
+            if i != 0:
+                t.append((a * t[i - 1] + b) % c)
+            gamma.append(ord(p[i]) ^ t[i])
+        print(t)
+        SummKodBukvOtkr.append(sum(gamma) % c)
+
+    print(KSumm)
+    print(SummKodBukvOtkr)
+    params = {'a': a, 'b': b, 'c': c, 'MaxVal': MaxVal, 't0': t0, 'P': P, 'KSumm': KSumm,
+              'SummKodBukvOtkr': SummKodBukvOtkr}
+    return render_template('lr4.html', **params)
